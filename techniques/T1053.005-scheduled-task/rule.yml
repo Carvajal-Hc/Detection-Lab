@@ -1,0 +1,48 @@
+# v1 — Tool-based
+title: Scheduled Task Creation via schtasks.exe
+id: 7f3b9c1a-2d4e-4a6f-8b1c-9e0d3f5a7c21
+status: experimental
+description: Detects creation of a scheduled task using schtasks.exe, a common persistence technique (MITRE T1053.005)
+references:
+  - https://attack.mitre.org/techniques/T1053/005/
+author: Carvajal-Hc
+date: 2026/07/24
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\schtasks.exe'
+    CommandLine|contains: '/create'
+  condition: selection
+falsepositives:
+  - Legitimate administrators creating scheduled tasks
+  - Software installers registering update tasks
+level: medium
+tags:
+  - attack.persistence
+  - attack.t1053.005
+
+# v2 — Behavior-based
+title: Scheduled Task Creation (Behavior-Based)
+id: 9a2f4b8c-1e3d-4f7a-b6c9-2d5e8a0f3c14
+status: experimental
+description: Detects the creation of a scheduled task via Windows Security Event 4698, regardless of the tool used (schtasks.exe, PowerShell, WMI, direct API). Covers MITRE T1053.005.
+references:
+  - https://attack.mitre.org/techniques/T1053/005/
+author: HNN
+date: 2026/07/24
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4698
+  condition: selection
+falsepositives:
+  - Legitimate software installers registering update tasks
+  - Administrators creating maintenance tasks via GPO or scripts
+level: medium
+tags:
+  - attack.persistence
+  - attack.t1053.005
