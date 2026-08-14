@@ -42,7 +42,7 @@ Runs across separate machines (victim / SIEM / workstation), mirroring the real-
 4. **Evade** my own rule — think like the attacker.
 5. **Fix** what the evasion exposed, and document the whole thing.
 
-> Steps 4–5 are the point. A rule you haven't tried to break is a rule you don't understand yet.
+Steps 4–5 are the point. A rule you haven't tried to break is a rule you don't understand yet.
 
 ## 🗂️ Coverage matrix
 
