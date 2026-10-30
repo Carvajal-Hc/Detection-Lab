@@ -1,0 +1,57 @@
+# DNS C2 / tunneling detection — Sigma source.
+# Portable rule. The production detection runs in ES|QL (see detection.md),
+# because the robust logic groups by registrable parent domain, which Sigma
+# cannot express. These rules are experimental and tuned for understanding.
+title: DNS Query With Long Random-Looking Subdomain
+id: d7a9ae59-ba66-43e5-883f-5a4ba73c89e8
+name: dns_long_subdomain
+status: experimental
+description: >
+  Base rule. A DNS query whose first label has 25+ alphanumeric characters,
+  a common sign of data encoded into subdomains (DNS tunneling / C2).
+author: Carvajal-Hc
+date: 2026-10-29
+references:
+  - https://attack.mitre.org/techniques/T1071/004/
+tags:
+  - attack.command-and-control
+  - attack.t1071.004
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|re: '[a-zA-Z0-9]{25,}\.'
+  condition: selection
+falsepositives:
+  - CDNs, antivirus and telemetry services that use long hashed subdomains
+level: low
+---
+title: Possible DNS Tunneling or C2 - Many Unique Long Subdomains From One Process
+id: 60441b41-f427-4e16-959c-e64fbae631e6
+status: experimental
+description: >
+  One process on one host resolves 20+ distinct names with long subdomains
+  within 10 minutes. Legitimate software repeats names; a DNS C2 channel encodes
+  new data in every query, so distinct-name count tracks query count.
+author: Carvajal-Hc
+date: 2026-10-29
+references:
+  - https://attack.mitre.org/techniques/T1071/004/
+tags:
+  - attack.command-and-control
+  - attack.t1071.004
+correlation:
+  type: value_count
+  rules:
+    - dns_long_subdomain
+  group-by:
+    - Computer
+    - Image
+  timespan: 10m
+  condition:
+    field: QueryName
+    gte: 20
+falsepositives:
+  - Security agents doing bulk reputation lookups
+level: high

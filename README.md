@@ -49,8 +49,9 @@ Steps 4–5 are the point. A rule you haven't tried to break is a rule you don't
 | Technique | ATT&CK ID | Tactic | Detection | Status |
 |-----------|-----------|--------|-----------|:------:|
 | [Scheduled Task](techniques/T1053.005-scheduled-task/) | [T1053.005](https://attack.mitre.org/techniques/T1053/005/) | Persistence | Security Event **4698** (behavior-based) | ✅ |
+| [DNS C2](techniques/T1071.004-dns-c2/) | [T1071.004](https://attack.mitre.org/techniques/T1071/004/) | Command & Control | Sysmon **22** + ES\|QL distribution (behavior-based) | ✅ |
 
-**Next up (planned):** Registry Run keys (T1547.001) · PowerShell execution (T1059.001) · LSASS credential access (T1003).
+**Next up (planned):** LSASS credential access (T1003.001) · Registry Run keys (T1547.001) · AI-assisted triage layer.
 
 ## 📁 How each technique is documented
 
@@ -62,6 +63,7 @@ Every folder under [`techniques/`](techniques/) follows the same shape:
 | `telemetry.md` | The telemetry the attack generates — Event IDs and key fields. |
 | `rule.yml` | The Sigma detection rule(s), tool-based → behavior-based. |
 | `evasion.md` | How I evaded my own rule, and what I changed to fix it. |
+| `detection.md` | The SIEM queries (ES\|QL), when the detection logic warrants its own file. |
 
 ## ⚠️ Note
 
